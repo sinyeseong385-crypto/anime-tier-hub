@@ -397,7 +397,25 @@
 
 <footer class="note">데이터는 이 브라우저에 자동 저장됩니다.</footer>
 
-<script>
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js';
+import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js';
+import { getDatabase, onValue, ref, set } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-database.js';
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyDevMWMYEHunhJLFDSET7V5HWOz6nY_pBo',
+  authDomain: 'animetier-ad6f7.firebaseapp.com',
+  databaseURL: 'https://animetier-ad6f7-default-rtdb.firebaseio.com',
+  projectId: 'animetier-ad6f7',
+  storageBucket: 'animetier-ad6f7.firebasestorage.app',
+  messagingSenderId: '865689968527',
+  appId: '1:865689968527:web:69525938f0b3169ffa75fa'
+};
+const firebaseApp = initializeApp(firebaseConfig);
+const firebaseAuth = getAuth(firebaseApp);
+const firebaseDatabase = getDatabase(firebaseApp);
+const sharedStateRef = ref(firebaseDatabase, 'animeTierHub/state');
+
 const TIER_DEFS = [
   {id:'GOD',   label:'GOD',    color:'#FFD700', desc:'각 장르별 1위 + GOAT에서 승급'},
   {id:'GOAT',  label:'GOAT',   color:'#FF9F1C', desc:'추천 애니 + 작화·스토리 모두 좋음'},
@@ -444,6 +462,8 @@ function makeId(){ return 'i'+Date.now().toString(36)+Math.random().toString(36)
 
 let state = { items:{}, assignment:{}, scenes:[] };
 let isAdmin = false;
+let sharedStorageReady = false;
+let applyingSharedState = false;
 
 function seedDefaults(){
   state = {items:{}, assignment:{}, scenes:[]};
@@ -460,6 +480,10 @@ async function save(){
   const savedState = JSON.stringify(state);
   try{ localStorage.setItem(STORAGE_KEY, savedState); }
   catch(e){ console.error('local save failed', e); }
+
+  try{
+    if(sharedStorageReady && !applyingSharedState) await set(sharedStateRef, state);
+  }catch(e){ console.error('shared save failed', e); }
 
   try{
     if(window.storage?.set) await window.storage.set(STORAGE_KEY, savedState, false);
@@ -488,6 +512,31 @@ async function load(){
   }catch(e){ /* not found */ }
   seedDefaults();
   await save();
+}
+
+function refreshVisibleView(){
+  if(document.getElementById('view-tier').classList.contains('active')) renderTier();
+  if(document.getElementById('view-scenes').classList.contains('active')) renderScenes();
+  if(document.getElementById('view-criteria').classList.contains('active')) renderCriteria();
+  if(document.getElementById('view-admin').classList.contains('active')) renderAdmin();
+}
+
+async function initSharedStorage(){
+  try{
+    if(!firebaseAuth.currentUser) await signInAnonymously(firebaseAuth);
+    sharedStorageReady = true;
+    onValue(sharedStateRef, async snapshot=>{
+      if(snapshot.exists()){
+        applyingSharedState = true;
+        state = {scenes:[], ...snapshot.val()};
+        try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+        refreshVisibleView();
+        applyingSharedState = false;
+      }else{
+        await set(sharedStateRef, state);
+      }
+    }, error=> console.error('shared load failed', error));
+  }catch(e){ console.error('shared connection failed', e); }
 }
 
 function cardMeta(item){
@@ -865,6 +914,7 @@ function tryLogin(){
 /* ---------- INIT ---------- */
 (async function init(){
   await load();
+  await initSharedStorage();
 })();
 </script>
 </body>
