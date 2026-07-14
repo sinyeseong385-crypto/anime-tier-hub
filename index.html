@@ -414,6 +414,7 @@ const TIER_DEFS = [
   {id:'UNSURE',label:'애매함', color:'#B5B0A6', desc:'잘 모름 (판단 보류)'},
 ];
 const ADMIN_PIN = '9039';
+const STORAGE_KEY = 'anime-hub-state-v3';
 
 const SEED_DATA = {
   GOD: ["RE:제로부터 시작하는 이세계 생활","4월은 너의 거짓말","마녀의 여행","향기로운 꽃은 늠름하게 핀다","바이올렛 에버가든","패배 히로인이 너무 많아!"],
@@ -456,15 +457,33 @@ function seedDefaults(){
 }
 
 async function save(){
-  try{ await window.storage.set('anime-hub-state-v3', JSON.stringify(state), false); }
-  catch(e){ console.error('save failed', e); }
+  const savedState = JSON.stringify(state);
+  try{ localStorage.setItem(STORAGE_KEY, savedState); }
+  catch(e){ console.error('local save failed', e); }
+
+  try{
+    if(window.storage?.set) await window.storage.set(STORAGE_KEY, savedState, false);
+  }catch(e){ console.error('remote save failed', e); }
 }
 async function load(){
   try{
-    const res = await window.storage.get('anime-hub-state-v3', false);
+    const savedState = localStorage.getItem(STORAGE_KEY);
+    if(savedState){
+      const parsed = JSON.parse(savedState);
+      if(parsed && parsed.items){ state = {scenes:[], ...parsed}; return; }
+    }
+  }catch(e){ console.error('local load failed', e); }
+
+  try{
+    if(!window.storage?.get) throw new Error('storage unavailable');
+    const res = await window.storage.get(STORAGE_KEY, false);
     if(res && res.value){
       const parsed = JSON.parse(res.value);
-      if(parsed && parsed.items){ state = {scenes:[], ...parsed}; return; }
+      if(parsed && parsed.items){
+        state = {scenes:[], ...parsed};
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        return;
+      }
     }
   }catch(e){ /* not found */ }
   seedDefaults();
