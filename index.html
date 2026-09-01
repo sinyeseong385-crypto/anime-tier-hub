@@ -1170,19 +1170,12 @@ function renderAdmin(){
         </div></div>
       </details>
       <details class="admin-section">
-        <summary>🎵 노래 TOP 3 갱신</summary>
-        <div class="admin-section-body">
-          <p class="tier-manager-note" style="margin-top:0;">기존 애니의 노래도 유튜브 조회수 순 TOP 3으로 다시 찾아 바꿉니다. 애니 수만큼 YouTube API 할당량을 사용합니다.</p>
-          <button class="login-btn" id="refreshSongsBtn" type="button">기존 노래를 조회수 TOP 3으로 갱신</button>
-          <div class="desc-save-msg" id="songRefreshMsg"></div>
-        </div>
-      </details>
-      <details class="admin-section">
-        <summary>✏️ 노래 이름 관리</summary>
+        <summary>✏️ 노래 이름 · 재생 링크 관리</summary>
         <div class="admin-section-body"><div class="desc-manager">
           <select id="songSelect"></select>
           <input type="text" id="songTitleInput" placeholder="노래 이름" maxlength="140">
-          <button class="login-btn" id="songTitleSaveBtn" type="button">노래 이름 저장</button>
+          <input type="url" id="songLinkInput" placeholder="유튜브 재생 링크 (선택사항)">
+          <button class="login-btn" id="songTitleSaveBtn" type="button">노래 정보 저장</button>
           <div class="desc-save-msg" id="songTitleSaveMsg"></div>
         </div></div>
       </details>
@@ -1194,7 +1187,6 @@ function renderAdmin(){
     populateDescManager();
     renderTierManager();
     populateSongManager();
-    document.getElementById('refreshSongsBtn').addEventListener('click', refreshExistingTopSongs);
   }else{
     panel.innerHTML = `
       <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#67615a;">비밀번호를 입력하면 티어표 편집 권한이 활성화됩니다.</div>
@@ -1209,6 +1201,7 @@ function renderAdmin(){
 function populateSongManager(){
   const select = document.getElementById('songSelect');
   const titleInput = document.getElementById('songTitleInput');
+  const linkInput = document.getElementById('songLinkInput');
   const message = document.getElementById('songTitleSaveMsg');
   select.innerHTML = '';
   const songs = Object.values(state.songs || {}).sort((a,b)=>{
@@ -1217,7 +1210,7 @@ function populateSongManager(){
   });
   if(!songs.length){
     const option = document.createElement('option'); option.textContent = '등록된 노래가 없습니다'; option.disabled = true; option.selected = true;
-    select.appendChild(option); titleInput.disabled = true;
+    select.appendChild(option); titleInput.disabled = true; linkInput.disabled = true;
     document.getElementById('songTitleSaveBtn').disabled = true;
     return;
   }
@@ -1229,6 +1222,7 @@ function populateSongManager(){
   const loadSong = ()=>{
     const song = state.songs[select.value];
     titleInput.value = song?.title || '';
+    linkInput.value = song?.query && /^https:\/\//.test(song.query) ? song.query : '';
     message.textContent = '';
   };
   select.addEventListener('change', loadSong);
@@ -1238,29 +1232,13 @@ function populateSongManager(){
     const title = titleInput.value.trim();
     if(!song || !title) return;
     song.title = title;
-    // 조회수 TOP 3로 연결된 직접 재생 링크는 유지하고, 검색형 곡만 새 제목으로 검색한다.
-    if(!song.query || !/^https:\/\//.test(song.query)) song.query = title;
+    const link = linkInput.value.trim();
+    song.query = link || title;
     save();
-    message.textContent = '✅ 노래 이름이 저장되었습니다.';
+    message.textContent = link ? '✅ 노래 이름과 재생 링크가 저장되었습니다.' : '✅ 노래 이름이 저장되었습니다.';
     select.selectedOptions[0].textContent = `[${song.animeName || '기타'} · ${song.type}] ${song.title}`;
     if(document.getElementById('view-music').classList.contains('active')) renderMusic();
   });
-}
-async function refreshExistingTopSongs(){
-  const button = document.getElementById('refreshSongsBtn');
-  const message = document.getElementById('songRefreshMsg');
-  const items = Object.values(state.items || {});
-  if(!YOUTUBE_DATA_API_KEY){ message.textContent = 'YouTube API 키가 연결되지 않았습니다.'; return; }
-  if(!confirm(`기존 애니 ${items.length}개의 곡을 유튜브 조회수 TOP 3으로 갱신할까요? API 할당량을 사용합니다.`)) return;
-  button.disabled = true;
-  for(let index=0; index<items.length; index++){
-    message.textContent = `조회수 TOP 3 확인 중… ${index + 1}/${items.length}`;
-    await resolveTopSongs(items[index].name, items[index].id);
-    await new Promise(resolve=>setTimeout(resolve, 250));
-  }
-  message.textContent = '✅ 기존 노래 갱신이 완료되었습니다.';
-  button.disabled = false;
-  if(document.getElementById('view-music').classList.contains('active')) renderMusic();
 }
 function makeTierId(){ return 'TIER_' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
 function saveTierChanges(){
