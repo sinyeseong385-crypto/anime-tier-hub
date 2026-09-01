@@ -344,6 +344,40 @@
   .search-clear{display:none;width:24px;height:24px;border:0;border-radius:50%;background:#eef0f6;color:#64748b;font-size:17px;line-height:1;cursor:pointer;}
   .anime-search.has-query .search-clear{display:block;}
   .search-status{min-height:20px;margin:0 2px 12px;color:#6d5dfc;font-size:12px;font-weight:700;}
+  .tier-manager{margin-top:22px;padding-top:18px;border-top:1px dashed #cbd5e1;}
+  .tier-manager h3{margin:0 0 12px;font-size:16px;font-family:'Inter',sans-serif;font-weight:800;}
+  .tier-editor{display:grid;grid-template-columns:50px 82px 1fr 88px 32px;gap:7px;align-items:center;margin-bottom:8px;}
+  .tier-editor input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:8px;font:13px 'Inter',sans-serif;outline:0;}
+  .tier-editor input:focus{border-color:#7668ff;box-shadow:0 0 0 3px rgba(109,93,252,.1);}
+  .tier-editor input[type="color"]{height:36px;padding:3px;cursor:pointer;}
+  .tier-remove{border:0;border-radius:8px;background:#fee2e2;color:#dc2626;width:32px;height:32px;font-size:18px;cursor:pointer;}
+  .tier-order{display:flex;gap:3px;}
+  .tier-order button{border:1px solid #d9d6ff;border-radius:7px;width:23px;height:32px;background:#f4f3ff;color:#5d52d9;font-size:14px;cursor:pointer;}
+  .tier-order button:disabled{opacity:.35;cursor:not-allowed;}
+  .tier-add{width:100%;margin-top:5px;padding:9px;border:1px dashed #938bff;border-radius:9px;background:#f7f6ff;color:#5d52d9;font:700 13px 'Inter',sans-serif;cursor:pointer;}
+  .tier-manager-note{font-size:11px;color:#64748b;line-height:1.45;margin:8px 0 0;}
+  @media(max-width:560px){.tier-editor{grid-template-columns:45px 62px 1fr 56px 30px;gap:4px}.tier-editor input{padding:7px;font-size:12px}.tier-order button{width:20px}}
+  .admin-panel{max-width:760px;padding:26px;}
+  .admin-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;}
+  .admin-heading h2{margin:0;font:800 22px 'Inter',sans-serif;letter-spacing:-.8px;}
+  .admin-section{margin-top:16px;border:1px solid var(--line);border-radius:14px;background:#fbfcff;overflow:hidden;}
+  .admin-section summary{display:flex;align-items:center;gap:9px;padding:15px 16px;cursor:pointer;font:800 15px 'Inter',sans-serif;list-style:none;}
+  .admin-section summary::-webkit-details-marker{display:none;}
+  .admin-section summary::after{content:'⌄';margin-left:auto;color:#7668ff;font-size:18px;transition:transform .15s;}
+  .admin-section[open] summary{border-bottom:1px solid var(--line);}
+  .admin-section[open] summary::after{transform:rotate(180deg);}
+  .admin-section-body{padding:16px;}
+  .admin-section .tier-manager,.admin-section .desc-manager{margin:0;padding:0;border:0;}
+  .admin-section .tier-manager h3,.admin-section .desc-manager h3{display:none;}
+  .admin-status.ok{margin:0;border-radius:11px;}
+  .music-note{margin:0 0 18px;color:var(--muted);font-size:13px;line-height:1.55;}
+  .song-card{display:flex;align-items:center;gap:8px;min-width:155px;max-width:260px;padding:9px 10px;border:0;border-radius:10px;background:linear-gradient(135deg,#243047,#40368b);color:#fff;box-shadow:0 5px 13px rgba(30,41,59,.17);cursor:pointer;}
+  .song-card:hover{transform:translateY(-2px);box-shadow:0 9px 18px rgba(64,54,139,.25);}
+  .song-type{flex:0 0 auto;border-radius:999px;padding:4px 6px;background:rgba(255,255,255,.17);font-size:10px;font-weight:800;letter-spacing:.35px;}
+  .song-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:700;}
+  .song-card .move-select{margin-left:auto;max-width:72px;border:1px solid rgba(255,255,255,.4);border-radius:6px;background:rgba(0,0,0,.18);color:#fff;font-size:11px;padding:4px;}
+  .song-card .song-del{border:0;background:transparent;color:#fff;font-size:18px;cursor:pointer;padding:0 1px;}
+  .music-empty{padding:20px;color:#94a3b8;font-size:13px;}
   @media (max-width:560px){.hero{padding:32px 25px}.widget-card{min-height:160px}.tier-badge{flex-basis:70px;font-size:13px}.wrap,#topbar{padding-left:15px;padding-right:15px}}
 </style>
 </head>
@@ -367,6 +401,12 @@
         <div class="widget-icon">🏆</div>
         <div class="widget-title">티어표</div>
         <div class="widget-desc">GOD부터 JOAT까지, 애니를 티어별로 분류합니다.</div>
+        <div class="widget-arrow">보러가기 →</div>
+      </div>
+      <div class="widget-card" data-target="music">
+        <div class="widget-icon">🎵</div>
+        <div class="widget-title">노래 티어표</div>
+        <div class="widget-desc">애니의 OST, 오프닝, 엔딩곡을 티어별로 분류합니다.</div>
         <div class="widget-arrow">보러가기 →</div>
       </div>
       <div class="widget-card" data-target="scenes">
@@ -412,6 +452,24 @@
     <div class="bench-section">
       <div class="bench-title">대기중</div>
       <div class="dropzone bench-drop" id="bench" data-tier="bench"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MUSIC TIER LIST -->
+<div class="view" id="view-music">
+  <div class="wrap">
+    <p class="music-note">애니 티어표에 애니를 추가하면 대표 OST · 오프닝 · 엔딩이 자동으로 대기중에 들어옵니다. 곡 카드를 누르면 유튜브에서 들을 수 있어요.</p>
+    <div class="anime-search" id="musicSearchWrap">
+      <span class="anime-search-icon">⌕</span>
+      <input id="musicSearch" type="search" placeholder="노래 또는 애니 제목 검색" autocomplete="off">
+      <button class="search-clear" id="clearMusicSearch" type="button" aria-label="노래 검색어 지우기">×</button>
+    </div>
+    <div class="search-status" id="musicSearchStatus" aria-live="polite"></div>
+    <div id="musicBoard"></div>
+    <div class="bench-section">
+      <div class="bench-title">대기중</div>
+      <div class="dropzone bench-drop" id="musicBench"></div>
     </div>
   </div>
 </div>
@@ -483,7 +541,7 @@ const homeDescription = document.querySelector('.hero p');
 if(homeTitle) homeTitle.textContent = 'ATier';
 if(homeDescription) homeDescription.textContent = '애니메이션 티어리스트';
 
-const TIER_DEFS = [
+const DEFAULT_TIER_DEFS = [
   {id:'GOD',   label:'GOD',    color:'#FFD700', desc:'각 장르별 1위 + GOAT에서 승급'},
   {id:'GOAT',  label:'GOAT',   color:'#FF9F1C', desc:'추천 애니 + 작화·스토리 모두 좋음'},
   {id:'AURA',  label:'Aura',   color:'#B057F2', desc:'GOAT는 아니지만 1티어보단 좋음'},
@@ -498,8 +556,12 @@ const TIER_DEFS = [
   {id:'JOAT',  label:'JOAT',   color:'#4A4A4A', desc:'보지 마셈'},
   {id:'UNSURE',label:'애매함', color:'#B5B0A6', desc:'잘 모름 (판단 보류)'},
 ];
+let TIER_DEFS = DEFAULT_TIER_DEFS.map(t=>({...t}));
 const ADMIN_PIN = '9039';
 const STORAGE_KEY = 'anime-hub-state-v3';
+// YouTube Data API v3 키를 넣으면, 새로 추가하는 애니의 곡을 조회수 순 TOP 3으로 자동 선정합니다.
+// 키는 Google Cloud에서 HTTP 리퍼러를 이 사이트 주소로 제한한 키만 사용하세요.
+const YOUTUBE_DATA_API_KEY = 'AIzaSyCBJRbsanm2M1yLPB8l20zxaciE8utq39U';
 
 const SEED_DATA = {
   GOD: ["RE:제로부터 시작하는 이세계 생활","4월은 너의 거짓말","마녀의 여행","향기로운 꽃은 늠름하게 핀다","바이올렛 에버가든","패배 히로인이 너무 많아!"],
@@ -527,14 +589,22 @@ const GRADIENTS = [
 function hashStr(s){ let h=0; for(let i=0;i<s.length;i++){ h=(h*31+s.charCodeAt(i))|0; } return Math.abs(h); }
 function makeId(){ return 'i'+Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
 
-let state = { items:{}, assignment:{}, scenes:[] };
+let state = { items:{}, assignment:{}, scenes:[], songs:{}, songAssignment:{}, tiers:TIER_DEFS };
 let isAdmin = false;
 let sharedStorageReady = false;
 let applyingSharedState = false;
 let searchQuery = '';
+let musicSearchQuery = '';
+let initialSongBackfillDone = false;
 
+function normalizeState(data){
+  state = {items:{}, assignment:{}, scenes:[], songs:{}, songAssignment:{}, ...data};
+  TIER_DEFS = Array.isArray(state.tiers) && state.tiers.length ? state.tiers : DEFAULT_TIER_DEFS.map(t=>({...t}));
+  state.tiers = TIER_DEFS;
+}
 function seedDefaults(){
-  state = {items:{}, assignment:{}, scenes:[]};
+  state = {items:{}, assignment:{}, scenes:[], songs:{}, songAssignment:{}, tiers:DEFAULT_TIER_DEFS.map(t=>({...t}))};
+  TIER_DEFS = state.tiers;
   Object.entries(SEED_DATA).forEach(([tierId, names])=>{
     names.forEach(name=>{
       const id = makeId();
@@ -562,7 +632,7 @@ async function load(){
     const savedState = localStorage.getItem(STORAGE_KEY);
     if(savedState){
       const parsed = JSON.parse(savedState);
-      if(parsed && parsed.items){ state = {scenes:[], ...parsed}; return; }
+      if(parsed && parsed.items){ normalizeState(parsed); return; }
     }
   }catch(e){ console.error('local load failed', e); }
 
@@ -572,7 +642,7 @@ async function load(){
     if(res && res.value){
       const parsed = JSON.parse(res.value);
       if(parsed && parsed.items){
-        state = {scenes:[], ...parsed};
+        normalizeState(parsed);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         return;
       }
@@ -584,6 +654,7 @@ async function load(){
 
 function refreshVisibleView(){
   if(document.getElementById('view-tier').classList.contains('active')) renderTier();
+  if(document.getElementById('view-music').classList.contains('active')) renderMusic();
   if(document.getElementById('view-scenes').classList.contains('active')) renderScenes();
   if(document.getElementById('view-criteria').classList.contains('active')) renderCriteria();
   if(document.getElementById('view-admin').classList.contains('active')) renderAdmin();
@@ -596,10 +667,18 @@ async function initSharedStorage(){
     onValue(sharedStateRef, async snapshot=>{
       if(snapshot.exists()){
         applyingSharedState = true;
-        state = {scenes:[], ...snapshot.val()};
+        normalizeState(snapshot.val());
         try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
         refreshVisibleView();
         applyingSharedState = false;
+        if(!initialSongBackfillDone){
+          initialSongBackfillDone = true;
+          const added = addSongsForExistingAnime();
+          if(added){
+            await save();
+            if(document.getElementById('view-music').classList.contains('active')) renderMusic();
+          }
+        }
       }else{
         await set(sharedStateRef, state);
       }
@@ -620,11 +699,12 @@ function showView(name){
   if(name === 'home'){ topbar.classList.remove('show'); }
   else{
     topbar.classList.add('show');
-    const titles = {tier:'🏆 티어표', scenes:'🎬 애니메이션 명장면', criteria:'📋 티어표 기준표', admin:'🔐 관리자 권한'};
+    const titles = {tier:'🏆 티어표', music:'🎵 노래 티어표', scenes:'🎬 애니메이션 명장면', criteria:'📋 티어표 기준표', admin:'🔐 관리자 권한'};
     document.getElementById('topbarTitle').textContent = titles[name] || '';
   }
   document.getElementById('adminBadge').style.display = isAdmin ? 'inline-block' : 'none';
   if(name === 'tier') renderTier();
+  if(name === 'music') renderMusic();
   if(name === 'scenes') renderScenes();
   if(name === 'criteria') renderCriteria();
   if(name === 'admin') renderAdmin();
@@ -654,6 +734,25 @@ document.getElementById('clearSearch').addEventListener('click', ()=>{
   searchQuery = '';
   input.focus();
   renderTier();
+});
+function matchesMusicSearch(song){
+  if(!musicSearchQuery) return true;
+  return [song.title, song.animeName, song.type].some(value => String(value || '').toLocaleLowerCase('ko').includes(musicSearchQuery));
+}
+function renderMusicSearchStatus(){
+  const input = document.getElementById('musicSearch');
+  const wrap = document.getElementById('musicSearchWrap');
+  const count = Object.values(state.songs || {}).filter(matchesMusicSearch).length;
+  wrap.classList.toggle('has-query', Boolean(musicSearchQuery));
+  document.getElementById('musicSearchStatus').textContent = musicSearchQuery ? `“${input.value.trim()}” 검색 결과 ${count}곡` : '';
+}
+document.getElementById('musicSearch').addEventListener('input', e=>{
+  musicSearchQuery = e.target.value.trim().toLocaleLowerCase('ko');
+  renderMusic();
+});
+document.getElementById('clearMusicSearch').addEventListener('click', ()=>{
+  const input = document.getElementById('musicSearch');
+  input.value = ''; musicSearchQuery = ''; input.focus(); renderMusic();
 });
 
 /* ---------- TIER BOARD ---------- */
@@ -738,6 +837,135 @@ function buildCard(item){
     card.addEventListener('click', ()=> openDescModal(item.id));
   }
   return card;
+}
+
+/* ---------- MUSIC TIER BOARD ---------- */
+function makeSongId(){ return 's'+Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+function renderMusic(){
+  const board = document.getElementById('musicBoard');
+  board.innerHTML = '';
+  TIER_DEFS.forEach(t=>{
+    const row = document.createElement('div'); row.className = 'tier-row';
+    const badge = document.createElement('div'); badge.className = 'tier-badge';
+    badge.style.setProperty('--tier-color', t.color); badge.textContent = t.label;
+    const zone = document.createElement('div'); zone.className = 'dropzone'; zone.dataset.musicTier = t.id;
+    row.append(badge, zone); board.appendChild(row);
+  });
+  const bench = document.getElementById('musicBench'); bench.innerHTML = '';
+  const songs = Object.values(state.songs || {}).filter(matchesMusicSearch);
+  if(!songs.length){
+    bench.innerHTML = `<div class="music-empty">${Object.keys(state.songs || {}).length ? '검색 결과와 일치하는 노래가 없습니다.' : '애니 티어표에서 애니를 추가하면 여기에 곡 3개가 자동으로 표시됩니다.'}</div>`;
+    renderMusicSearchStatus();
+    return;
+  }
+  songs.forEach(song=>{
+    const tier = state.songAssignment?.[song.id] || 'bench';
+    const zone = tier === 'bench' ? bench : document.querySelector(`#musicBoard .dropzone[data-music-tier="${tier}"]`);
+    if(zone) zone.appendChild(buildSongCard(song));
+  });
+  renderMusicSearchStatus();
+}
+function buildSongCard(song){
+  const card = document.createElement('div');
+  card.className = 'song-card'; card.title = '클릭해서 유튜브에서 듣기';
+  card.setAttribute('role','button'); card.tabIndex = 0;
+  const type = document.createElement('span'); type.className = 'song-type'; type.textContent = song.type;
+  const name = document.createElement('span'); name.className = 'song-name'; name.textContent = song.title;
+  card.append(type, name);
+  const play = ()=> {
+    const target = song.query && /^https:\/\//.test(song.query)
+      ? song.query
+      : 'https://www.youtube.com/results?search_query='+encodeURIComponent(song.query || song.title);
+    window.open(target, '_blank', 'noopener');
+  };
+  card.addEventListener('click', play);
+  card.addEventListener('keydown', e=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); play(); } });
+  if(isAdmin){
+    const move = document.createElement('select'); move.className = 'move-select';
+    [['bench','대기중'], ...TIER_DEFS.map(t=>[t.id,t.label])].forEach(([value,label])=>{
+      const option = document.createElement('option'); option.value=value; option.textContent=label; move.appendChild(option);
+    });
+    move.value = state.songAssignment?.[song.id] || 'bench';
+    ['click','pointerdown'].forEach(event=>move.addEventListener(event,e=>e.stopPropagation()));
+    move.addEventListener('change', ()=>{ state.songAssignment[song.id]=move.value; save(); renderMusic(); });
+    const del = document.createElement('button'); del.className='song-del'; del.type='button'; del.textContent='×'; del.title='곡 삭제';
+    del.addEventListener('click', e=>{ e.stopPropagation(); delete state.songs[song.id]; delete state.songAssignment[song.id]; save(); renderMusic(); });
+    card.append(move, del);
+  }
+  return card;
+}
+function addSongsForAnime(animeName, animeItemId){
+  const songs = [
+    {type:'OST', title:`${animeName} OST`, query:`${animeName} OST`},
+    {type:'OP', title:`${animeName} 오프닝`, query:`${animeName} opening`},
+    {type:'ED', title:`${animeName} 엔딩`, query:`${animeName} ending`},
+  ];
+  songs.forEach(song=>{
+    const id = makeSongId();
+    state.songs[id] = {id, animeItemId, animeName, ...song};
+    state.songAssignment[id] = 'bench';
+  });
+  save(); renderMusic();
+  resolveTopSongs(animeName, animeItemId);
+}
+function addSongsForExistingAnime(){
+  let added = 0;
+  Object.values(state.items || {}).forEach(item=>{
+    const alreadyAdded = Object.values(state.songs || {}).some(song=>song.animeItemId === item.id);
+    if(alreadyAdded) return;
+    const songs = [
+      {type:'OST', title:`${item.name} OST`, query:`${item.name} OST`},
+      {type:'OP', title:`${item.name} 오프닝`, query:`${item.name} opening`},
+      {type:'ED', title:`${item.name} 엔딩`, query:`${item.name} ending`},
+    ];
+    songs.forEach(song=>{
+      const id = makeSongId();
+      state.songs[id] = {id, animeItemId:item.id, animeName:item.name, ...song};
+      state.songAssignment[id] = 'bench';
+      added++;
+    });
+  });
+  return added;
+}
+async function resolveTopSongs(animeName, animeItemId){
+  if(YOUTUBE_DATA_API_KEY){
+    try{
+      const query = `${animeName} OST opening ending`;
+      const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=3&order=viewCount&q=${encodeURIComponent(query)}&key=${encodeURIComponent(YOUTUBE_DATA_API_KEY)}`;
+      const response = await fetch(url);
+      const result = await response.json();
+      if(!response.ok || !Array.isArray(result.items) || result.items.length < 3) throw new Error('YouTube results unavailable');
+      const linkedSongs = Object.values(state.songs || {}).filter(song=>song.animeItemId === animeItemId);
+      result.items.slice(0,3).forEach((video,index)=>{
+        const song = linkedSongs[index]; if(!song) return;
+        song.type = `TOP ${index + 1}`;
+        song.title = video.snippet.title;
+        song.query = `https://www.youtube.com/watch?v=${video.id.videoId}`;
+      });
+      await save();
+      if(document.getElementById('view-music').classList.contains('active')) renderMusic();
+      return;
+    }catch(e){ console.info('YouTube TOP 3 조회 실패, 대표 곡 검색으로 표시합니다.', e); }
+  }
+  resolveAnimeThemes(animeName, animeItemId);
+}
+async function resolveAnimeThemes(animeName, animeItemId){
+  try{
+    const search = await fetch(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(animeName)}&limit=1&sfw=true`);
+    const result = await search.json();
+    const anime = result?.data?.[0]; if(!anime?.mal_id) return;
+    const themesRes = await fetch(`https://api.jikan.moe/v4/anime/${anime.mal_id}/themes`);
+    const themes = await themesRes.json();
+    const opening = themes?.data?.openings?.[0];
+    const ending = themes?.data?.endings?.[0];
+    let changed = false;
+    Object.values(state.songs || {}).forEach(song=>{
+      if(song.animeItemId !== animeItemId) return;
+      if(song.type === 'OP' && opening){ song.title = opening; song.query = opening; changed = true; }
+      if(song.type === 'ED' && ending){ song.title = ending; song.query = ending; changed = true; }
+    });
+    if(changed){ await save(); if(document.getElementById('view-music').classList.contains('active')) renderMusic(); }
+  }catch(e){ console.info('곡 정보 자동 인식에 실패했습니다.', e); }
 }
 
 let dragState = null;
@@ -826,6 +1054,8 @@ document.getElementById('addForm').addEventListener('submit', e=>{
 
   // 새로 추가한 애니는 티어를 정하기 전까지 항상 아래 대기중 목록에 표시한다.
   save(); renderTier();
+  // 같은 애니 항목에 연결된 OST · 오프닝 · 엔딩 3곡도 노래 티어표 대기중에 생성한다.
+  addSongsForAnime(name, id);
 });
 document.getElementById('resetBtn').addEventListener('click', ()=>{
   if(!isAdmin) return;
@@ -917,21 +1147,54 @@ function renderAdmin(){
   const panel = document.getElementById('adminPanel');
   if(isAdmin){
     panel.innerHTML = `
-      <div class="admin-status ok">✅ 관리자로 로그인되어 있습니다. 이제 티어표 위젯에서 애니를 추가·이동·삭제할 수 있어요.</div>
-      <button class="logout-btn" id="logoutBtn" style="margin-top:14px;">로그아웃</button>
-      <div class="desc-manager">
-        <h3>📝 애니 설명 관리</h3>
-        <select id="descSelect"></select>
-        <textarea id="descTextarea" placeholder="이 애니에 대한 설명을 입력하세요..."></textarea>
-        <button class="login-btn" id="descSaveBtn">설명 저장</button>
-        <div class="desc-save-msg" id="descSaveMsg"></div>
+      <div class="admin-heading">
+        <h2>관리자 대시보드</h2>
+        <button class="logout-btn" id="logoutBtn">로그아웃</button>
       </div>
+      <div class="admin-status ok">✅ 변경 사항은 자동으로 모든 사용자에게 동기화됩니다.</div>
+      <details class="admin-section" open>
+        <summary>🏷️ 티어 기준표 관리</summary>
+        <div class="admin-section-body"><div class="tier-manager">
+          <div id="tierEditorList"></div>
+          <button type="button" class="tier-add" id="addTierBtn">+ 새 티어 추가</button>
+          <p class="tier-manager-note">이름·설명·색상은 바로 저장됩니다. 티어 삭제 시 해당 애니는 대기중으로 이동합니다.</p>
+        </div></div>
+      </details>
+      <details class="admin-section">
+        <summary>📝 애니 설명 관리</summary>
+        <div class="admin-section-body"><div class="desc-manager">
+          <select id="descSelect"></select>
+          <textarea id="descTextarea" placeholder="이 애니에 대한 설명을 입력하세요..."></textarea>
+          <button class="login-btn" id="descSaveBtn">설명 저장</button>
+          <div class="desc-save-msg" id="descSaveMsg"></div>
+        </div></div>
+      </details>
+      <details class="admin-section">
+        <summary>🎵 노래 TOP 3 갱신</summary>
+        <div class="admin-section-body">
+          <p class="tier-manager-note" style="margin-top:0;">기존 애니의 노래도 유튜브 조회수 순 TOP 3으로 다시 찾아 바꿉니다. 애니 수만큼 YouTube API 할당량을 사용합니다.</p>
+          <button class="login-btn" id="refreshSongsBtn" type="button">기존 노래를 조회수 TOP 3으로 갱신</button>
+          <div class="desc-save-msg" id="songRefreshMsg"></div>
+        </div>
+      </details>
+      <details class="admin-section">
+        <summary>✏️ 노래 이름 관리</summary>
+        <div class="admin-section-body"><div class="desc-manager">
+          <select id="songSelect"></select>
+          <input type="text" id="songTitleInput" placeholder="노래 이름" maxlength="140">
+          <button class="login-btn" id="songTitleSaveBtn" type="button">노래 이름 저장</button>
+          <div class="desc-save-msg" id="songTitleSaveMsg"></div>
+        </div></div>
+      </details>
     `;
     document.getElementById('logoutBtn').addEventListener('click', ()=>{
       isAdmin = false;
       renderAdmin();
     });
     populateDescManager();
+    renderTierManager();
+    populateSongManager();
+    document.getElementById('refreshSongsBtn').addEventListener('click', refreshExistingTopSongs);
   }else{
     panel.innerHTML = `
       <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#67615a;">비밀번호를 입력하면 티어표 편집 권한이 활성화됩니다.</div>
@@ -942,6 +1205,114 @@ function renderAdmin(){
     document.getElementById('loginBtn').addEventListener('click', tryLogin);
     document.getElementById('pinInput').addEventListener('keydown', e=>{ if(e.key==='Enter') tryLogin(); });
   }
+}
+function populateSongManager(){
+  const select = document.getElementById('songSelect');
+  const titleInput = document.getElementById('songTitleInput');
+  const message = document.getElementById('songTitleSaveMsg');
+  select.innerHTML = '';
+  const songs = Object.values(state.songs || {}).sort((a,b)=>{
+    const byAnime = (a.animeName || '').localeCompare(b.animeName || '', 'ko');
+    return byAnime || (a.title || '').localeCompare(b.title || '', 'ko');
+  });
+  if(!songs.length){
+    const option = document.createElement('option'); option.textContent = '등록된 노래가 없습니다'; option.disabled = true; option.selected = true;
+    select.appendChild(option); titleInput.disabled = true;
+    document.getElementById('songTitleSaveBtn').disabled = true;
+    return;
+  }
+  songs.forEach(song=>{
+    const option = document.createElement('option'); option.value = song.id;
+    option.textContent = `[${song.animeName || '기타'} · ${song.type}] ${song.title}`;
+    select.appendChild(option);
+  });
+  const loadSong = ()=>{
+    const song = state.songs[select.value];
+    titleInput.value = song?.title || '';
+    message.textContent = '';
+  };
+  select.addEventListener('change', loadSong);
+  loadSong();
+  document.getElementById('songTitleSaveBtn').addEventListener('click', ()=>{
+    const song = state.songs[select.value];
+    const title = titleInput.value.trim();
+    if(!song || !title) return;
+    song.title = title;
+    // 조회수 TOP 3로 연결된 직접 재생 링크는 유지하고, 검색형 곡만 새 제목으로 검색한다.
+    if(!song.query || !/^https:\/\//.test(song.query)) song.query = title;
+    save();
+    message.textContent = '✅ 노래 이름이 저장되었습니다.';
+    select.selectedOptions[0].textContent = `[${song.animeName || '기타'} · ${song.type}] ${song.title}`;
+    if(document.getElementById('view-music').classList.contains('active')) renderMusic();
+  });
+}
+async function refreshExistingTopSongs(){
+  const button = document.getElementById('refreshSongsBtn');
+  const message = document.getElementById('songRefreshMsg');
+  const items = Object.values(state.items || {});
+  if(!YOUTUBE_DATA_API_KEY){ message.textContent = 'YouTube API 키가 연결되지 않았습니다.'; return; }
+  if(!confirm(`기존 애니 ${items.length}개의 곡을 유튜브 조회수 TOP 3으로 갱신할까요? API 할당량을 사용합니다.`)) return;
+  button.disabled = true;
+  for(let index=0; index<items.length; index++){
+    message.textContent = `조회수 TOP 3 확인 중… ${index + 1}/${items.length}`;
+    await resolveTopSongs(items[index].name, items[index].id);
+    await new Promise(resolve=>setTimeout(resolve, 250));
+  }
+  message.textContent = '✅ 기존 노래 갱신이 완료되었습니다.';
+  button.disabled = false;
+  if(document.getElementById('view-music').classList.contains('active')) renderMusic();
+}
+function makeTierId(){ return 'TIER_' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function saveTierChanges(){
+  state.tiers = TIER_DEFS;
+  save();
+  refreshVisibleView();
+}
+function renderTierManager(){
+  const list = document.getElementById('tierEditorList');
+  list.innerHTML = '';
+  TIER_DEFS.forEach((tier, index)=>{
+    const row = document.createElement('div');
+    row.className = 'tier-editor';
+    const order = document.createElement('div');
+    order.className = 'tier-order';
+    const up = document.createElement('button');
+    up.type = 'button'; up.textContent = '↑'; up.title = '위로 이동'; up.disabled = index === 0;
+    const down = document.createElement('button');
+    down.type = 'button'; down.textContent = '↓'; down.title = '아래로 이동'; down.disabled = index === TIER_DEFS.length - 1;
+    up.addEventListener('click', ()=>{
+      [TIER_DEFS[index - 1], TIER_DEFS[index]] = [TIER_DEFS[index], TIER_DEFS[index - 1]];
+      saveTierChanges(); renderAdmin();
+    });
+    down.addEventListener('click', ()=>{
+      [TIER_DEFS[index + 1], TIER_DEFS[index]] = [TIER_DEFS[index], TIER_DEFS[index + 1]];
+      saveTierChanges(); renderAdmin();
+    });
+    order.append(up, down);
+    const label = document.createElement('input');
+    label.value = tier.label; label.placeholder = '티어 이름';
+    const desc = document.createElement('input');
+    desc.value = tier.desc || ''; desc.placeholder = '티어 설명';
+    const color = document.createElement('input');
+    color.type = 'color'; color.value = /^#[0-9a-f]{6}$/i.test(tier.color) ? tier.color : '#6d5dfc';
+    const remove = document.createElement('button');
+    remove.type = 'button'; remove.className = 'tier-remove'; remove.textContent = '×'; remove.title = '티어 삭제';
+    label.addEventListener('change', ()=>{ tier.label = label.value.trim() || tier.label; saveTierChanges(); });
+    desc.addEventListener('change', ()=>{ tier.desc = desc.value.trim(); saveTierChanges(); });
+    color.addEventListener('input', ()=>{ tier.color = color.value; saveTierChanges(); });
+    remove.addEventListener('click', ()=>{
+      if(!confirm(`“${tier.label}” 티어를 삭제할까요? 포함된 애니는 대기중으로 이동합니다.`)) return;
+      Object.keys(state.assignment).forEach(id=>{ if(state.assignment[id] === tier.id) state.assignment[id] = 'bench'; });
+      TIER_DEFS = TIER_DEFS.filter(t=>t.id !== tier.id);
+      saveTierChanges(); renderAdmin();
+    });
+    row.append(order, label, desc, color, remove);
+    list.appendChild(row);
+  });
+  document.getElementById('addTierBtn').addEventListener('click', ()=>{
+    TIER_DEFS.push({id:makeTierId(), label:'새 티어', color:'#7668ff', desc:'티어 기준을 입력하세요'});
+    saveTierChanges(); renderAdmin();
+  });
 }
 function populateDescManager(){
   const select = document.getElementById('descSelect');
