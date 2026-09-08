@@ -407,6 +407,13 @@
   .song-card .move-select{margin-left:auto;max-width:72px;border:1px solid rgba(255,255,255,.4);border-radius:6px;background:rgba(0,0,0,.18);color:#fff;font-size:11px;padding:4px;}
   .song-card .song-del{border:0;background:transparent;color:#fff;font-size:18px;cursor:pointer;padding:0 1px;}
   .music-empty{padding:20px;color:#94a3b8;font-size:13px;}
+  .exam-intro{margin:6px 0 20px;color:var(--muted);font-size:14px;line-height:1.6;}
+  .exam-choice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .exam-choice{min-height:175px;padding:22px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.84);box-shadow:0 9px 25px rgba(30,41,59,.06);text-align:left;cursor:pointer;transition:.18s ease;}
+  .exam-choice:hover:not(:disabled){transform:translateY(-4px);border-color:#8b80ff;box-shadow:0 15px 28px rgba(82,70,223,.16);}
+  .exam-choice:disabled{opacity:.58;cursor:not-allowed;}.exam-choice-icon{font-size:30px;display:block;margin-bottom:11px;}.exam-choice strong{font-size:19px;display:block;margin-bottom:7px;}.exam-choice small{color:var(--muted);font-size:12px;}
+  .exam-panel{max-width:800px;margin:0 auto;padding:24px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.88);box-shadow:0 9px 25px rgba(30,41,59,.06);}.exam-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:18px;}.exam-head h2{margin:0;font-size:23px;}.exam-back{border:0;border-radius:9px;background:#edf0f8;padding:8px 12px;color:#475569;font-weight:700;cursor:pointer;}.exam-question{border-top:1px solid var(--line);padding:22px 0;}.exam-question:first-child{border-top:0;padding-top:0;}.exam-question h3{font-size:16px;line-height:1.6;margin:0 0 13px;}.exam-question img{display:block;max-width:100%;max-height:350px;object-fit:contain;border-radius:12px;margin:12px 0;}.exam-link{display:inline-block;margin:0 0 12px;color:#5b4ce1;font-size:13px;font-weight:700;}.exam-option{display:flex;align-items:center;gap:9px;margin:8px 0;padding:12px;border:1px solid var(--line);border-radius:10px;cursor:pointer;}.exam-option:has(input:checked){border-color:#7668ff;background:#f4f3ff;}.exam-submit{margin-top:16px;}.exam-result{padding:20px;border-radius:13px;background:#eefdf8;color:#166534;font-size:18px;font-weight:800;text-align:center;}.exam-admin-form{display:grid;gap:9px;}.exam-admin-form input,.exam-admin-form textarea,.exam-admin-form select{width:100%;border:1px solid #cbd5e1;border-radius:9px;padding:10px;font:14px 'Inter',sans-serif;}.exam-admin-form textarea{min-height:75px;resize:vertical;}.exam-choices-input{display:grid;grid-template-columns:1fr 1fr;gap:8px;}.exam-question-list{margin-top:14px;display:grid;gap:7px;}.exam-question-row{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:9px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;}.exam-question-row button{border:0;border-radius:7px;background:#fee2e2;color:#dc2626;padding:5px 8px;cursor:pointer;}.exam-toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0;padding:10px 0;border-bottom:1px solid var(--line);}.exam-toggle:last-child{border-bottom:0;}.exam-upload-note{font-size:11px;color:var(--muted);}
+  @media(max-width:680px){.exam-choice-grid{grid-template-columns:1fr;}.exam-choices-input{grid-template-columns:1fr;}.exam-panel{padding:18px;}.exam-question h3{font-size:15px;}}
   @media (max-width:560px){.hero{padding:32px 25px}.widget-card{min-height:160px}.tier-badge{flex-basis:70px;font-size:13px}.wrap,#topbar{padding-left:15px;padding-right:15px}#view-home .hero{min-height:300px;padding:18px;background-position:center top;}#view-home .hero p{font-size:12px;}}
 </style>
 </head>
@@ -437,6 +444,12 @@
         <div class="widget-title">노래 티어표</div>
         <div class="widget-desc">애니의 OST, 오프닝, 엔딩곡을 티어별로 분류합니다.</div>
         <div class="widget-arrow">보러가기 →</div>
+      </div>
+      <div class="widget-card" data-target="exam">
+        <div class="widget-icon">📝</div>
+        <div class="widget-title">애니메이션 시험</div>
+        <div class="widget-desc">테스트, 중간고사, 기말고사로 애니 지식을 확인합니다.</div>
+        <div class="widget-arrow">시험 보러가기 →</div>
       </div>
       <div class="widget-card" data-target="scenes">
         <div class="widget-icon">🎬</div>
@@ -507,6 +520,13 @@
       <div class="bench-title">대기중</div>
       <div class="dropzone bench-drop" id="musicBench"></div>
     </div>
+  </div>
+</div>
+
+<!-- ANIME EXAM -->
+<div class="view" id="view-exam">
+  <div class="wrap">
+    <div id="examContent"></div>
   </div>
 </div>
 
@@ -626,21 +646,31 @@ const GRADIENTS = [
 function hashStr(s){ let h=0; for(let i=0;i<s.length;i++){ h=(h*31+s.charCodeAt(i))|0; } return Math.abs(h); }
 function makeId(){ return 'i'+Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
 
-let state = { items:{}, assignment:{}, scenes:[], songs:{}, songAssignment:{}, deletedSongKeys:{}, tiers:TIER_DEFS };
+let state = { items:{}, assignment:{}, scenes:[], songs:{}, songAssignment:{}, deletedSongKeys:{}, exams:{settings:{midterm:false,final:false},questions:{test:[],midterm:[],final:[]}}, tiers:TIER_DEFS };
 let isAdmin = false;
 let sharedStorageReady = false;
 let applyingSharedState = false;
 let searchQuery = '';
 let musicSearchQuery = '';
 let initialSongBackfillDone = false;
+let activeExam = null;
+let pendingExamImage = '';
+let examAdminType = 'test';
 
 function normalizeState(data){
-  state = {items:{}, assignment:{}, scenes:[], songs:{}, songAssignment:{}, deletedSongKeys:{}, ...data};
+  state = {items:{}, assignment:{}, scenes:[], songs:{}, songAssignment:{}, deletedSongKeys:{}, exams:{settings:{midterm:false,final:false},questions:{test:[],midterm:[],final:[]}}, ...data};
+  state.exams = {settings:{midterm:false,final:false},questions:{test:[],midterm:[],final:[]}, ...state.exams};
+  state.exams.settings = {midterm:false,final:false, ...(state.exams.settings || {})};
+  state.exams.questions = {test:[],midterm:[],final:[], ...(state.exams.questions || {})};
+  Object.values(state.exams.questions).forEach(list=>{
+    if(!Array.isArray(list)) return;
+    list.forEach((question,index)=>{ if(typeof question.active !== 'boolean') question.active = index < 10; });
+  });
   TIER_DEFS = Array.isArray(state.tiers) && state.tiers.length ? state.tiers : DEFAULT_TIER_DEFS.map(t=>({...t}));
   state.tiers = TIER_DEFS;
 }
 function seedDefaults(){
-  state = {items:{}, assignment:{}, scenes:[], songs:{}, songAssignment:{}, deletedSongKeys:{}, tiers:DEFAULT_TIER_DEFS.map(t=>({...t}))};
+  state = {items:{}, assignment:{}, scenes:[], songs:{}, songAssignment:{}, deletedSongKeys:{}, exams:{settings:{midterm:false,final:false},questions:{test:[],midterm:[],final:[]}}, tiers:DEFAULT_TIER_DEFS.map(t=>({...t}))};
   TIER_DEFS = state.tiers;
   Object.entries(SEED_DATA).forEach(([tierId, names])=>{
     names.forEach(name=>{
@@ -692,6 +722,7 @@ async function load(){
 function refreshVisibleView(){
   if(document.getElementById('view-tier').classList.contains('active')) renderTier();
   if(document.getElementById('view-music').classList.contains('active')) renderMusic();
+  if(document.getElementById('view-exam').classList.contains('active')) renderExam();
   if(document.getElementById('view-scenes').classList.contains('active')) renderScenes();
   if(document.getElementById('view-criteria').classList.contains('active')) renderCriteria();
   if(document.getElementById('view-admin').classList.contains('active')) renderAdmin();
@@ -744,12 +775,13 @@ function showView(name, fromHistory=false){
   if(name === 'home'){ topbar.classList.remove('show'); }
   else{
     topbar.classList.add('show');
-    const titles = {tier:'🏆 티어표', music:'🎵 노래 티어표', scenes:'🎬 애니메이션 명장면', criteria:'📋 티어표 기준표', admin:'🔐 관리자 권한'};
+    const titles = {tier:'🏆 티어표', music:'🎵 노래 티어표', exam:'📝 애니메이션 시험', scenes:'🎬 애니메이션 명장면', criteria:'📋 티어표 기준표', admin:'🔐 관리자 권한'};
     document.getElementById('topbarTitle').textContent = titles[name] || '';
   }
   document.getElementById('adminBadge').style.display = isAdmin ? 'inline-block' : 'none';
   if(name === 'tier') renderTier();
   if(name === 'music') renderMusic();
+  if(name === 'exam') renderExam();
   if(name === 'scenes') renderScenes();
   if(name === 'criteria') renderCriteria();
   if(name === 'admin') renderAdmin();
@@ -887,6 +919,64 @@ function buildCard(item){
     card.addEventListener('click', ()=> openDescModal(item.id));
   }
   return card;
+}
+
+/* ---------- ANIME EXAM ---------- */
+const EXAM_META = {
+  test:{label:'테스트', icon:'✏️', description:'상시 응시 가능'},
+  midterm:{label:'중간고사', icon:'📘', description:'관리자가 열었을 때 응시 가능'},
+  final:{label:'기말고사', icon:'🎓', description:'관리자가 열었을 때 응시 가능'},
+};
+function examIsOpen(type){ return type === 'test' || Boolean(state.exams?.settings?.[type]); }
+function activeExamQuestions(type){ return (state.exams.questions[type] || []).filter(question=>question.active); }
+function renderExam(){
+  const content = document.getElementById('examContent');
+  content.innerHTML = '';
+  if(!activeExam){
+    const intro = document.createElement('p'); intro.className='exam-intro';
+    intro.textContent = '원하는 시험을 선택하세요. 각 시험은 10문제로 구성되며, 테스트는 언제나 응시할 수 있습니다.';
+    const grid = document.createElement('div'); grid.className='exam-choice-grid';
+    Object.entries(EXAM_META).forEach(([type,meta])=>{
+      const questions = activeExamQuestions(type);
+      const open = examIsOpen(type);
+      const button = document.createElement('button'); button.className='exam-choice'; button.type='button'; button.disabled = !open;
+      button.innerHTML = `<span class="exam-choice-icon">${meta.icon}</span><strong>${meta.label}</strong><small>${open ? `${questions.length}/10 문제 등록됨 · ${meta.description}` : '🔒 현재 닫혀 있습니다'}</small>`;
+      button.addEventListener('click', ()=>{ activeExam=type; renderExam(); });
+      grid.appendChild(button);
+    });
+    content.append(intro,grid); return;
+  }
+  const type = activeExam, meta = EXAM_META[type], questions = activeExamQuestions(type);
+  const panel = document.createElement('div'); panel.className='exam-panel';
+  const head = document.createElement('div'); head.className='exam-head';
+  const heading = document.createElement('h2'); heading.textContent = `${meta.icon} ${meta.label}`;
+  const back = document.createElement('button'); back.className='exam-back'; back.type='button'; back.textContent='← 시험 선택'; back.addEventListener('click',()=>{activeExam=null;renderExam();});
+  head.append(heading,back); panel.appendChild(head);
+  if(questions.length !== 10){
+    const notice = document.createElement('p'); notice.className='exam-intro';
+    notice.textContent = `아직 시험 문제가 준비 중입니다. 현재 ${questions.length}/10문제 등록됨`;
+    panel.appendChild(notice); content.appendChild(panel); return;
+  }
+  const form = document.createElement('form');
+  questions.forEach((question,index)=>{
+    const box = document.createElement('section'); box.className='exam-question';
+    const title = document.createElement('h3'); title.textContent = `${index+1}. ${question.text}`; box.appendChild(title);
+    if(question.image){ const image=document.createElement('img'); image.src=question.image; image.alt=`${index+1}번 문제 이미지`; box.appendChild(image); }
+    if(question.link){ const link=document.createElement('a'); link.className='exam-link'; link.href=question.link; link.target='_blank'; link.rel='noopener'; link.textContent='🔗 참고 링크 열기'; box.appendChild(link); }
+    question.choices.forEach((choice,choiceIndex)=>{
+      const label=document.createElement('label'); label.className='exam-option';
+      const radio=document.createElement('input'); radio.type='radio'; radio.name=`exam-${index}`; radio.value=String(choiceIndex); radio.required=true;
+      const text=document.createElement('span'); text.textContent=choice; label.append(radio,text); box.appendChild(label);
+    });
+    form.appendChild(box);
+  });
+  const submit=document.createElement('button'); submit.type='submit'; submit.className='login-btn exam-submit'; submit.textContent='답안 제출'; form.appendChild(submit);
+  form.addEventListener('submit',event=>{
+    event.preventDefault(); let score=0;
+    questions.forEach((question,index)=>{ if(Number(new FormData(form).get(`exam-${index}`)) === Number(question.answer)) score++; });
+    form.innerHTML=''; const result=document.createElement('div'); result.className='exam-result'; result.textContent=`${meta.label} 결과: ${score} / 10점`; form.appendChild(result);
+  });
+  panel.appendChild(form); content.appendChild(panel);
 }
 
 /* ---------- MUSIC TIER BOARD ---------- */
@@ -1254,6 +1344,12 @@ function renderAdmin(){
           <div class="desc-save-msg" id="songTitleSaveMsg"></div>
         </div></div>
       </details>
+      <details class="admin-section" open>
+        <summary>📝 애니메이션 시험 관리</summary>
+        <div class="admin-section-body">
+          <div id="examManager"></div>
+        </div>
+      </details>
     `;
     document.getElementById('logoutBtn').addEventListener('click', ()=>{
       isAdmin = false;
@@ -1262,6 +1358,7 @@ function renderAdmin(){
     populateDescManager();
     renderTierManager();
     populateSongManager();
+    renderExamManager();
   }else{
     panel.innerHTML = `
       <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#67615a;">비밀번호를 입력하면 티어표 편집 권한이 활성화됩니다.</div>
@@ -1313,6 +1410,77 @@ function populateSongManager(){
     message.textContent = link ? '✅ 노래 이름과 재생 링크가 저장되었습니다.' : '✅ 노래 이름이 저장되었습니다.';
     select.selectedOptions[0].textContent = `[${song.animeName || '기타'} · ${song.type}] ${song.title}`;
     if(document.getElementById('view-music').classList.contains('active')) renderMusic();
+  });
+}
+function makeExamQuestionId(){ return 'q'+Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+function renderExamManager(){
+  const manager = document.getElementById('examManager');
+  if(!manager) return;
+  const questions = state.exams.questions[examAdminType] || [];
+  const activeQuestions = questions.filter(question=>question.active);
+  manager.innerHTML = `
+    <div class="exam-toggle"><span><strong>중간고사 공개</strong><br><small>사용자가 중간고사를 볼 수 있습니다.</small></span><input id="midtermToggle" type="checkbox" ${state.exams.settings.midterm ? 'checked' : ''}></div>
+    <div class="exam-toggle"><span><strong>기말고사 공개</strong><br><small>사용자가 기말고사를 볼 수 있습니다.</small></span><input id="finalToggle" type="checkbox" ${state.exams.settings.final ? 'checked' : ''}></div>
+    <div class="exam-admin-form" style="margin-top:16px;">
+      <select id="examTypeSelect">
+        <option value="test">테스트</option><option value="midterm">중간고사</option><option value="final">기말고사</option>
+      </select>
+      <div class="tier-manager-note" id="examQuestionCount">${EXAM_META[examAdminType].label}: 출제중 ${activeQuestions.length}/10문제 · 문제은행 ${questions.length}문제</div>
+      <textarea id="examQuestionText" placeholder="문제 내용을 입력하세요"></textarea>
+      <div class="exam-choices-input">
+        <input id="examChoice0" placeholder="선택지 1"><input id="examChoice1" placeholder="선택지 2">
+        <input id="examChoice2" placeholder="선택지 3"><input id="examChoice3" placeholder="선택지 4">
+      </div>
+      <select id="examAnswer"><option value="0">정답: 선택지 1</option><option value="1">정답: 선택지 2</option><option value="2">정답: 선택지 3</option><option value="3">정답: 선택지 4</option></select>
+      <input id="examLink" type="url" placeholder="참고 링크 (선택사항)">
+      <input id="examImageUrl" type="url" placeholder="이미지 링크 (선택사항)">
+      <input id="examImageFile" type="file" accept="image/*">
+      <div class="exam-upload-note" id="examUploadNote">사진 파일은 800KB 이하로 첨부할 수 있습니다.</div>
+      <button type="button" class="login-btn" id="addExamQuestionBtn">+ 문제 추가</button>
+      <div class="desc-save-msg" id="examSaveMsg"></div>
+    </div>
+    <div class="exam-question-list" id="examQuestionList"></div>
+  `;
+  document.getElementById('examTypeSelect').value = examAdminType;
+  document.getElementById('midtermToggle').addEventListener('change',event=>{ state.exams.settings.midterm=event.target.checked; save(); if(document.getElementById('view-exam').classList.contains('active')) renderExam(); });
+  document.getElementById('finalToggle').addEventListener('change',event=>{ state.exams.settings.final=event.target.checked; save(); if(document.getElementById('view-exam').classList.contains('active')) renderExam(); });
+  document.getElementById('examTypeSelect').addEventListener('change',event=>{ examAdminType=event.target.value; pendingExamImage=''; renderExamManager(); });
+  const fileInput = document.getElementById('examImageFile');
+  fileInput.addEventListener('change',()=>{
+    const file=fileInput.files?.[0]; const note=document.getElementById('examUploadNote');
+    if(!file){pendingExamImage='';return;}
+    if(file.size > 800 * 1024){ fileInput.value=''; pendingExamImage=''; note.textContent='❌ 사진은 800KB 이하만 첨부할 수 있습니다.'; return; }
+    const reader=new FileReader();
+    reader.onload=()=>{pendingExamImage=reader.result; note.textContent='✅ 사진이 첨부되었습니다.';}; reader.readAsDataURL(file);
+  });
+  document.getElementById('addExamQuestionBtn').addEventListener('click',()=>{
+    const message=document.getElementById('examSaveMsg');
+    const list=state.exams.questions[examAdminType];
+    const text=document.getElementById('examQuestionText').value.trim();
+    const choices=[0,1,2,3].map(index=>document.getElementById(`examChoice${index}`).value.trim());
+    if(!text || choices.some(choice=>!choice)){message.textContent='❌ 문제와 선택지 4개를 모두 입력하세요.';return;}
+    const image=document.getElementById('examImageUrl').value.trim() || pendingExamImage;
+    list.push({id:makeExamQuestionId(),text,choices,answer:Number(document.getElementById('examAnswer').value),link:document.getElementById('examLink').value.trim(),image,active:false});
+    pendingExamImage=''; save(); renderExamManager(); if(document.getElementById('view-exam').classList.contains('active')) renderExam();
+  });
+  const questionList=document.getElementById('examQuestionList');
+  [['출제중 (시험에 표시됨)',activeQuestions],['문제 보관함',questions.filter(question=>!question.active)]].forEach(([title,list])=>{
+    const heading=document.createElement('strong'); heading.textContent=title; heading.style.marginTop='8px'; questionList.appendChild(heading);
+    if(!list.length){ const empty=document.createElement('div'); empty.className='tier-manager-note'; empty.textContent='없음'; questionList.appendChild(empty); }
+    list.forEach((question,index)=>{
+      const row=document.createElement('div'); row.className='exam-question-row';
+      const label=document.createElement('span'); label.textContent=`${index+1}. ${question.text}`;
+      const actions=document.createElement('span');
+      const move=document.createElement('button'); move.type='button'; move.style.background='#ede9fe'; move.style.color='#5b4ce1';
+      move.textContent=question.active ? '보관함으로' : '출제하기';
+      move.addEventListener('click',()=>{
+        if(!question.active && activeExamQuestions(examAdminType).length >= 10){ alert('출제중 문제는 최대 10개입니다. 먼저 다른 문제를 보관함으로 옮겨주세요.'); return; }
+        question.active=!question.active; save(); renderExamManager(); if(document.getElementById('view-exam').classList.contains('active')) renderExam();
+      });
+      const remove=document.createElement('button'); remove.type='button'; remove.textContent='삭제';
+      remove.addEventListener('click',()=>{ state.exams.questions[examAdminType]=state.exams.questions[examAdminType].filter(item=>item.id!==question.id); save(); renderExamManager(); if(document.getElementById('view-exam').classList.contains('active')) renderExam(); });
+      actions.append(move,remove); row.append(label,actions); questionList.appendChild(row);
+    });
   });
 }
 function makeTierId(){ return 'TIER_' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
