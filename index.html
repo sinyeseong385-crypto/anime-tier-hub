@@ -414,7 +414,8 @@
   .exam-choice:disabled{opacity:.58;cursor:not-allowed;}.exam-choice-icon{font-size:30px;display:block;margin-bottom:11px;}.exam-choice strong{font-size:19px;display:block;margin-bottom:7px;}.exam-choice small{color:var(--muted);font-size:12px;}
   .exam-panel{max-width:800px;margin:0 auto;padding:24px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.88);box-shadow:0 9px 25px rgba(30,41,59,.06);}.exam-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:18px;}.exam-head h2{margin:0;font-size:23px;}.exam-back{border:0;border-radius:9px;background:#edf0f8;padding:8px 12px;color:#475569;font-weight:700;cursor:pointer;}.exam-question{border-top:1px solid var(--line);padding:22px 0;}.exam-question:first-child{border-top:0;padding-top:0;}.exam-question h3{font-size:16px;line-height:1.6;margin:0 0 13px;}.exam-question img{display:block;max-width:100%;max-height:350px;object-fit:contain;border-radius:12px;margin:12px 0;}.exam-link{display:inline-block;margin:0 0 12px;color:#5b4ce1;font-size:13px;font-weight:700;}.exam-option{display:flex;align-items:center;gap:9px;margin:8px 0;padding:12px;border:1px solid var(--line);border-radius:10px;cursor:pointer;}.exam-option:has(input:checked){border-color:#7668ff;background:#f4f3ff;}.exam-submit{margin-top:16px;}.exam-result{padding:20px;border-radius:13px;background:#eefdf8;color:#166534;font-size:18px;font-weight:800;text-align:center;}.exam-admin-form{display:grid;gap:9px;}.exam-admin-form input,.exam-admin-form textarea,.exam-admin-form select{width:100%;border:1px solid #cbd5e1;border-radius:9px;padding:10px;font:14px 'Inter',sans-serif;}.exam-admin-form textarea{min-height:75px;resize:vertical;}.exam-choices-input{display:grid;grid-template-columns:1fr 1fr;gap:8px;}.exam-question-list{margin-top:14px;display:grid;gap:7px;}.exam-question-row{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:9px 10px;border:1px solid var(--line);border-radius:9px;font-size:13px;}.exam-question-row button{border:0;border-radius:7px;background:#fee2e2;color:#dc2626;padding:5px 8px;cursor:pointer;}.exam-toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0;padding:10px 0;border-bottom:1px solid var(--line);}.exam-toggle:last-child{border-bottom:0;}.exam-upload-note{font-size:11px;color:var(--muted);}
   .exam-media-grid{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;}.exam-media-grid img{width:min(100%,330px);margin:0;}.exam-option{align-items:flex-start;}.exam-option-body{flex:1;}.exam-option-body .exam-media-grid img{max-height:190px;}.exam-short-answer{width:100%;min-height:110px;border:1px solid #cbd5e1;border-radius:10px;padding:11px;font:14px 'Inter',sans-serif;resize:vertical;}.exam-choice-editor{padding:10px;border:1px solid var(--line);border-radius:10px;background:#fbfcff;display:grid;gap:7px;}.exam-choice-editor strong{font-size:12px;color:#475569;}
-  @media(max-width:680px){.exam-choice-grid{grid-template-columns:1fr;}.exam-choices-input{grid-template-columns:1fr;}.exam-panel{padding:18px;}.exam-question h3{font-size:15px;}}
+  .caption-tool{max-width:760px;margin:0 auto;padding:22px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.9);box-shadow:0 9px 25px rgba(30,41,59,.06);}.caption-tool h2{margin:0 0 8px;}.caption-tool p{color:var(--muted);font-size:13px;line-height:1.55;}.caption-tool input,.caption-tool textarea{width:100%;margin:10px 0;border:1px solid #cbd5e1;border-radius:10px;padding:11px;font:14px 'Inter',sans-serif;}.caption-tool textarea{min-height:220px;resize:vertical;}.caption-status{min-height:20px;font-size:13px;color:#4f46c8;font-weight:700;margin:10px 0;}.caption-now{margin:10px 0;padding:15px;border-radius:12px;background:#183d35;color:#effff8;font-size:17px;font-weight:800;line-height:1.55;text-align:center;}.caption-video-wrap{position:relative;margin:10px 0;overflow:hidden;border-radius:13px;background:#0b1020;}.caption-video-wrap video{display:block;width:100%;max-height:65vh;background:#0b1020;}.caption-video-overlay{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);width:calc(100% - 24px);padding:10px 13px;border-radius:10px;background:rgba(4,8,20,.82);color:#fff;text-align:center;font-weight:800;line-height:1.5;pointer-events:none;}.caption-download{display:none;margin-top:9px;text-align:center;text-decoration:none;}
+  @media(max-width:680px){.exam-choice-grid{grid-template-columns:1fr;}.exam-choices-input{grid-template-columns:1fr;}.exam-panel{padding:18px;}.exam-question h3{font-size:15px;}.caption-tool{padding:16px;}.caption-tool .login-btn{width:100%;min-height:46px;}}
   @media (max-width:560px){.hero{padding:32px 25px}.widget-card{min-height:160px}.tier-badge{flex-basis:70px;font-size:13px}.wrap,#topbar{padding-left:15px;padding-right:15px}#view-home .hero{min-height:300px;padding:18px;background-position:center top;}#view-home .hero p{font-size:12px;}}
 </style>
 </head>
@@ -451,6 +452,12 @@
         <div class="widget-title">애니메이션 시험</div>
         <div class="widget-desc">테스트, 중간고사, 기말고사로 애니 지식을 확인합니다.</div>
         <div class="widget-arrow">시험 보러가기 →</div>
+      </div>
+      <div class="widget-card" data-target="localcaption">
+        <div class="widget-icon">🎙️</div>
+        <div class="widget-title">무료 음성 자막</div>
+        <div class="widget-desc">일본어 MP3를 기기에서 직접 인식해 SRT 자막으로 만듭니다.</div>
+        <div class="widget-arrow">MP3 자막 만들기 →</div>
       </div>
       <div class="widget-card" data-target="scenes">
         <div class="widget-icon">🎬</div>
@@ -524,6 +531,23 @@
   </div>
 </div>
 
+<!-- FREE LOCAL MP3 CAPTION -->
+<div class="view" id="view-localcaption">
+  <div class="wrap"><section class="caption-tool">
+    <h2>🎙️ 무료 일본어 MP3 자막</h2>
+    <p>영상과 번역용 MP3를 따로 선택할 수 있습니다. 음성 인식은 브라우저와 내 기기에서만 처리되며, API 키와 결제는 필요하지 않습니다. MP3는 영상과 같은 길이·시작 시점이어야 자막 시간이 맞습니다.</p>
+    <label>1. 영상 파일 (화면에 재생)<input id="localCaptionVideoFile" type="file" accept="video/*"></label>
+    <label>2. 번역용 일본어 MP3 (음성 인식)<input id="localCaptionAudioFile" type="file" accept="audio/mpeg,audio/mp3,audio/mpeg3,.mp3,.m4a,.wav,.webm"></label>
+    <audio id="localCaptionAudio" controls style="display:none;width:100%;margin:8px 0;"></audio>
+    <div class="caption-video-wrap" id="localCaptionVideoWrap" style="display:none;"><video id="localCaptionVideo" controls playsinline></video><div class="caption-video-overlay" id="localCaptionVideoOverlay">재생하면 한국어 자막이 표시됩니다.</div></div>
+    <button class="login-btn" id="localCaptionStart" type="button">MP3 자막 만들기</button>
+    <div class="caption-status" id="localCaptionStatus"></div>
+    <div class="caption-now" id="localCaptionNow" style="display:none;">재생하면 한국어 자막이 여기에 표시됩니다.</div>
+    <textarea id="localCaptionOutput" readonly placeholder="생성된 SRT 자막이 여기에 표시됩니다."></textarea>
+    <a class="login-btn caption-download" id="localCaptionDownload" download="atier-japanese-subtitles.srt">SRT 파일 다운로드</a>
+  </section></div>
+</div>
+
 <!-- ANIME EXAM -->
 <div class="view" id="view-exam">
   <div class="wrap">
@@ -577,6 +601,7 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js';
 import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js';
 import { getDatabase, onValue, ref, set } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-database.js';
+import { pipeline } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDevMWMYEHunhJLFDSET7V5HWOz6nY_pBo',
@@ -730,6 +755,7 @@ function refreshVisibleView(){
   if(document.getElementById('view-tier').classList.contains('active')) renderTier();
   if(document.getElementById('view-music').classList.contains('active')) renderMusic();
   if(document.getElementById('view-exam').classList.contains('active')) renderExam();
+  if(document.getElementById('view-localcaption').classList.contains('active')) renderLocalCaption();
   if(document.getElementById('view-scenes').classList.contains('active')) renderScenes();
   if(document.getElementById('view-criteria').classList.contains('active')) renderCriteria();
   if(document.getElementById('view-admin').classList.contains('active')) renderAdmin();
@@ -782,13 +808,14 @@ function showView(name, fromHistory=false){
   if(name === 'home'){ topbar.classList.remove('show'); }
   else{
     topbar.classList.add('show');
-    const titles = {tier:'🏆 티어표', music:'🎵 노래 티어표', exam:'📝 애니메이션 시험', scenes:'🎬 애니메이션 명장면', criteria:'📋 티어표 기준표', admin:'🔐 관리자 권한'};
+    const titles = {tier:'🏆 티어표', music:'🎵 노래 티어표', exam:'📝 애니메이션 시험', localcaption:'🎙️ 무료 음성 자막', scenes:'🎬 애니메이션 명장면', criteria:'📋 티어표 기준표', admin:'🔐 관리자 권한'};
     document.getElementById('topbarTitle').textContent = titles[name] || '';
   }
   document.getElementById('adminBadge').style.display = isAdmin ? 'inline-block' : 'none';
   if(name === 'tier') renderTier();
   if(name === 'music') renderMusic();
   if(name === 'exam') renderExam();
+  if(name === 'localcaption') renderLocalCaption();
   if(name === 'scenes') renderScenes();
   if(name === 'criteria') renderCriteria();
   if(name === 'admin') renderAdmin();
@@ -928,7 +955,259 @@ function buildCard(item){
   return card;
 }
 
+/* ---------- ANIME TRANSLATION ---------- */
+/* Translation feature removed from ATier. Kept inactive to preserve the existing app's script layout. */
+if(false){
+let translationCues = [];
+let translationObjectUrl = '';
+let activeTranslationText = '';
+const translationCache = new Map();
+function subtitleTimeToSeconds(value){
+  const parts=value.trim().replace(',', '.').split(':').map(Number);
+  return parts.length === 3 ? parts[0]*3600+parts[1]*60+parts[2] : parts.length === 2 ? parts[0]*60+parts[1] : Number(value);
+}
+function parseSubtitleText(raw){
+  const cleaned=raw.replace(/^\uFEFF/,'').replace(/\r/g,'').replace(/^WEBVTT[^\n]*\n?/i,'');
+  return cleaned.split(/\n\s*\n/).map(block=>{
+    const lines=block.split('\n').filter(Boolean); const timingIndex=lines.findIndex(line=>line.includes('-->'));
+    if(timingIndex<0) return null;
+    const [start,end]=lines[timingIndex].split('-->').map(value=>subtitleTimeToSeconds(value.split(' ')[0]));
+    const text=lines.slice(timingIndex+1).join(' ').replace(/<[^>]+>/g,'').trim();
+    return text && Number.isFinite(start) && Number.isFinite(end) ? {start,end,text} : null;
+  }).filter(Boolean);
+}
+function decodeTranslation(text){ const area=document.createElement('textarea'); area.innerHTML=text; return area.value; }
+async function translateCaption(text){
+  if(translationCache.has(text)) return translationCache.get(text);
+  const task=(async()=>{
+    const response=await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|ko`);
+    const data=await response.json();
+    if(!response.ok || !data?.responseData?.translatedText) throw new Error('translation unavailable');
+    return decodeTranslation(data.responseData.translatedText);
+  })();
+  translationCache.set(text,task); return task;
+}
+function setTranslationCaption(english,korean='번역 중…'){
+  document.getElementById('translationEnglish').textContent=english || '자막을 기다리는 중…';
+  document.getElementById('translationKorean').textContent=korean;
+  const overlay=document.getElementById('translationOverlay');
+  overlay.textContent=korean === '번역 중…' ? english : korean;
+  overlay.style.display=english ? 'block' : 'none';
+}
+async function updateTranslationForTime(){
+  const video=document.getElementById('translationVideo');
+  const cue=translationCues.find(item=>video.currentTime>=item.start && video.currentTime<=item.end);
+  if(!cue){ if(activeTranslationText){activeTranslationText='';setTranslationCaption('','자막을 기다리는 중…');} return; }
+  if(cue.text===activeTranslationText) return;
+  activeTranslationText=cue.text;
+  if(cue.korean){ setTranslationCaption(cue.text,cue.korean); return; }
+  setTranslationCaption(cue.text);
+  try{ const translated=await translateCaption(cue.text); if(activeTranslationText===cue.text) setTranslationCaption(cue.text,translated); }
+  catch(error){ if(activeTranslationText===cue.text) setTranslationCaption(cue.text,'번역을 불러오지 못했습니다. 잠시 후 다시 재생해 보세요.'); }
+}
+function renderTranslation(){ /* 파일 선택 상태를 유지하는 독립 도구 화면 */ }
+async function loadTranslationSubtitles(){
+  const status=document.getElementById('translationStatus');
+  const file=document.getElementById('translationSubtitleFile').files?.[0];
+  let source=document.getElementById('translationSubtitleText').value.trim();
+  if(file) source=await file.text();
+  if(!source){ status.textContent='영어 자막 파일을 선택하거나 자막 내용을 붙여넣어 주세요.'; return; }
+  translationCues=parseSubtitleText(source); activeTranslationText='';
+  status.textContent=translationCues.length ? `✅ ${translationCues.length}개의 영어 자막을 불러왔습니다.` : '자막 형식을 읽지 못했습니다. SRT 또는 VTT 형식인지 확인해 주세요.';
+  setTranslationCaption('','자막을 기다리는 중…');
+}
+function openAIResponseText(payload){
+  if(typeof payload?.output_text==='string') return payload.output_text;
+  return (payload?.output||[]).flatMap(item=>item.content||[]).filter(item=>item.type==='output_text').map(item=>item.text||'').join('');
+}
+function parseJsonArray(text){
+  const cleaned=text.trim().replace(/^```(?:json)?\s*/i,'').replace(/\s*```$/,'');
+  const start=cleaned.indexOf('['), end=cleaned.lastIndexOf(']');
+  return JSON.parse(start>=0 && end>=start ? cleaned.slice(start,end+1) : cleaned);
+}
+async function translateJapaneseSegments(segments,key,onProgress){
+  const result=[];
+  for(let index=0;index<segments.length;index+=50){
+    const part=segments.slice(index,index+50);
+    onProgress?.(index,segments.length);
+    const response=await fetch('https://api.openai.com/v1/responses',{
+      method:'POST', headers:{'Authorization':`Bearer ${key}`,'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'gpt-4.1-mini',
+        instructions:'Translate each Japanese anime dialogue into natural Korean. Return ONLY a valid JSON array of Korean strings. The result must have exactly the same number and order as the input.',
+        input:JSON.stringify(part.map(item=>item.text)), store:false
+      })
+    });
+    const data=await response.json();
+    if(!response.ok) throw new Error(data?.error?.message||'한국어 번역 요청에 실패했습니다.');
+    const translated=parseJsonArray(openAIResponseText(data));
+    if(!Array.isArray(translated) || translated.length!==part.length) throw new Error('번역 결과 형식을 읽지 못했습니다. 다시 시도해 주세요.');
+    result.push(...translated.map(item=>String(item)));
+  }
+  onProgress?.(segments.length,segments.length);
+  return result;
+}
+async function makeAudioChunks(file,onProgress){
+  const context=new (window.AudioContext||window.webkitAudioContext)();
+  let source;
+  try{ source=await context.decodeAudioData(await file.arrayBuffer()); }
+  catch(error){ throw new Error('이 영상의 음성을 읽지 못했습니다. 다른 MP4/WebM 파일을 사용하거나 2번에 M4A/MP3 음성 파일을 넣어 주세요.'); }
+  finally{ context.close(); }
+  const outputRate=16000, secondsPerChunk=600, totalSamples=Math.ceil(source.duration*outputRate), chunks=[];
+  for(let from=0;from<totalSamples;from+=secondsPerChunk*outputRate){
+    const length=Math.min(secondsPerChunk*outputRate,totalSamples-from), bytes=new ArrayBuffer(44+length*2), view=new DataView(bytes);
+    const write=(offset,text)=>[...text].forEach((char,index)=>view.setUint8(offset+index,char.charCodeAt(0)));
+    write(0,'RIFF'); view.setUint32(4,36+length*2,true); write(8,'WAVE'); write(12,'fmt '); view.setUint32(16,16,true); view.setUint16(20,1,true); view.setUint16(22,1,true); view.setUint32(24,outputRate,true); view.setUint32(28,outputRate*2,true); view.setUint16(32,2,true); view.setUint16(34,16,true); write(36,'data'); view.setUint32(40,length*2,true);
+    for(let index=0;index<length;index++){
+      const sourceIndex=Math.min(source.length-1,Math.floor((from+index)*source.sampleRate/outputRate));
+      let sample=0; for(let channel=0;channel<source.numberOfChannels;channel++) sample+=source.getChannelData(channel)[sourceIndex];
+      view.setInt16(44+index*2,Math.max(-1,Math.min(1,sample/source.numberOfChannels))*0x7fff,true);
+    }
+    chunks.push({offset:from/outputRate,file:new File([bytes],`atier-audio-${chunks.length+1}.wav`,{type:'audio/wav'})});
+    onProgress?.(chunks.length,Math.ceil(totalSamples/(secondsPerChunk*outputRate)));
+  }
+  return chunks;
+}
+async function transcribeJapaneseChunk(file,key){
+  const form=new FormData();
+  form.append('file',file); form.append('model','whisper-1'); form.append('language','ja');
+  form.append('response_format','verbose_json'); form.append('timestamp_granularities[]','segment');
+  const response=await fetch('https://api.openai.com/v1/audio/transcriptions',{method:'POST',headers:{'Authorization':`Bearer ${key}`},body:form});
+  const data=await response.json();
+  if(!response.ok) throw new Error(data?.error?.message||'음성 인식 요청에 실패했습니다.');
+  return data.segments||[];
+}
+async function createJapaneseVoiceSubtitles(){
+  const status=document.getElementById('translationStatus');
+  const button=document.getElementById('translationJapaneseBtn');
+  const key=document.getElementById('translationApiKey').value.trim();
+  const videoFile=document.getElementById('translationVideoFile').files?.[0];
+  const audioFile=document.getElementById('translationAudioFile').files?.[0];
+  const file=audioFile||videoFile;
+  if(!file){ status.textContent='먼저 일본어 음성이 있는 영상 파일을 선택해 주세요.'; return; }
+  if(!key){ status.textContent='OpenAI API 키를 입력해 주세요. 키는 저장되지 않습니다.'; return; }
+  button.disabled=true;
+  try{
+    status.textContent='🎵 영상에서 음성을 준비하는 중… 긴 영상은 시간이 걸릴 수 있습니다.';
+    const chunks=await makeAudioChunks(file,(done,total)=>{ status.textContent=`🎵 음성 조각을 준비하는 중… ${done}/${total}`; });
+    const segments=[];
+    for(let index=0;index<chunks.length;index++){
+      status.textContent=`🎙️ 일본어 음성을 인식하는 중… ${index+1}/${chunks.length}`;
+      const result=await transcribeJapaneseChunk(chunks[index].file,key);
+      segments.push(...result.filter(item=>Number.isFinite(item.start)&&Number.isFinite(item.end)&&item.text?.trim()).map(item=>({start:item.start+chunks[index].offset,end:item.end+chunks[index].offset,text:item.text.trim()})));
+    }
+    if(!segments.length) throw new Error('인식한 일본어 대사가 없습니다. 음성이 들리는 파일인지 확인해 주세요.');
+    const korean=await translateJapaneseSegments(segments,key,(done,total)=>{ status.textContent=`💬 한국어로 번역하는 중… ${done}/${total}`; });
+    translationCache.clear(); activeTranslationText='';
+    translationCues=segments.map((item,index)=>({...item,korean:korean[index]}));
+    status.textContent=`✅ 일본어 음성 ${translationCues.length}개를 한국어 자막으로 만들었습니다. 영상을 재생해 보세요.`;
+    setTranslationCaption('','자막을 기다리는 중…');
+    document.getElementById('translationDisplay').style.display='grid';
+    updateTranslationForTime();
+  }catch(error){
+    status.textContent=`오류: ${error?.message||'처리하지 못했습니다. API 키와 파일을 확인해 주세요.'}`;
+  }finally{ button.disabled=false; }
+}
+document.getElementById('translationVideoFile').addEventListener('change',event=>{
+  const file=event.target.files?.[0]; if(!file) return;
+  if(translationObjectUrl) URL.revokeObjectURL(translationObjectUrl);
+  translationObjectUrl=URL.createObjectURL(file);
+  const video=document.getElementById('translationVideo'); video.src=translationObjectUrl; video.style.display='block';
+  document.getElementById('translationDisplay').style.display='grid';
+  document.getElementById('translationStatus').textContent=`✅ “${file.name}” 영상을 불러왔습니다.`;
+});
+document.getElementById('translationLoadBtn').addEventListener('click',()=>{ loadTranslationSubtitles(); });
+document.getElementById('translationJapaneseBtn').addEventListener('click',createJapaneseVoiceSubtitles);
+document.getElementById('translationVideo').addEventListener('timeupdate',updateTranslationForTime);
+document.getElementById('translationVideo').addEventListener('seeked',updateTranslationForTime);
+document.getElementById('translationClearBtn').addEventListener('click',()=>{
+  if(translationObjectUrl) URL.revokeObjectURL(translationObjectUrl);
+  translationObjectUrl=''; translationCues=[]; translationCache.clear(); activeTranslationText='';
+  const video=document.getElementById('translationVideo'); video.removeAttribute('src'); video.load(); video.style.display='none';
+  document.getElementById('translationVideoFile').value=''; document.getElementById('translationAudioFile').value=''; document.getElementById('translationSubtitleFile').value=''; document.getElementById('translationSubtitleText').value=''; document.getElementById('translationApiKey').value='';
+  document.getElementById('translationDisplay').style.display='none'; document.getElementById('translationOverlay').style.display='none'; document.getElementById('translationStatus').textContent='초기화되었습니다.';
+});
+}
+
 /* ---------- ANIME EXAM ---------- */
+let localWhisper = null;
+let localCaptionUrl = '';
+let localDisplayUrl = '';
+let localCaptionCues = [];
+const localTranslationCache = new Map();
+function srtTime(seconds){
+  const total=Math.max(0,Math.round(seconds*1000)), ms=total%1000, all=Math.floor(total/1000), s=all%60, m=Math.floor(all/60)%60, h=Math.floor(all/3600);
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')},${String(ms).padStart(3,'0')}`;
+}
+function renderLocalCaption(){ /* 독립 MP3 자막 도구 */ }
+async function translateJapaneseFree(text){
+  if(localTranslationCache.has(text)) return localTranslationCache.get(text);
+  const task=(async()=>{
+    const response=await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=ja|ko`);
+    const data=await response.json();
+    if(!response.ok||!data?.responseData?.translatedText) throw new Error('무료 번역 서비스를 사용할 수 없습니다.');
+    const area=document.createElement('textarea'); area.innerHTML=data.responseData.translatedText; return area.value;
+  })();
+  localTranslationCache.set(text,task); return task;
+}
+function updateLocalCaptionNow(){
+  const videoWrap=document.getElementById('localCaptionVideoWrap');
+  const media=videoWrap.style.display==='none' ? document.getElementById('localCaptionAudio') : document.getElementById('localCaptionVideo');
+  const cue=localCaptionCues.find(item=>media.currentTime>=item.start&&media.currentTime<=item.end);
+  const text=cue?.korean||'…';
+  document.getElementById('localCaptionNow').textContent=text;
+  document.getElementById('localCaptionVideoOverlay').textContent=text;
+}
+async function createLocalMp3Caption(){
+  const videoFile=document.getElementById('localCaptionVideoFile').files?.[0];
+  const audioFile=document.getElementById('localCaptionAudioFile').files?.[0];
+  const file=audioFile||videoFile;
+  const status=document.getElementById('localCaptionStatus');
+  const button=document.getElementById('localCaptionStart');
+  const output=document.getElementById('localCaptionOutput');
+  if(!file){ status.textContent='번역할 일본어 MP3 또는 음성이 있는 영상 파일을 선택해 주세요.'; return; }
+  button.disabled=true; output.value=''; localTranslationCache.clear();
+  try{
+    if(!localWhisper){
+      status.textContent='무료 일본어 음성 모델을 처음 내려받는 중… Wi‑Fi에서 잠시 기다려 주세요.';
+      localWhisper=await pipeline('automatic-speech-recognition','Xenova/whisper-tiny',{progress_callback:progress=>{ if(progress?.status==='progress'){ const value=Number(progress.progress)||0; status.textContent=`무료 음성 모델 다운로드 중… ${Math.round(value>1 ? value : value*100)}%`; }}});
+    }
+    status.textContent='MP3를 기기에서 자막으로 만드는 중… 긴 파일은 시간이 걸립니다.';
+    const source=URL.createObjectURL(file);
+    const result=await localWhisper(source,{language:'japanese',task:'transcribe',return_timestamps:true,chunk_length_s:30,stride_length_s:5});
+    URL.revokeObjectURL(source);
+    const chunks=(result.chunks||[]).filter(chunk=>Array.isArray(chunk.timestamp)&&Number.isFinite(chunk.timestamp[0])&&Number.isFinite(chunk.timestamp[1])&&chunk.text?.trim());
+    if(!chunks.length) throw new Error('자막 시간을 만들지 못했습니다. 더 짧고 음성이 선명한 MP3로 다시 시도해 주세요.');
+    status.textContent=`무료 한국어 번역 중… 0/${chunks.length}`;
+    localCaptionCues=[]; let translationFailures=0;
+    for(let index=0;index<chunks.length;index++){
+      let korean;
+      try{korean=await translateJapaneseFree(chunks[index].text.trim());}
+      catch(error){korean=`[번역 실패] ${chunks[index].text.trim()}`; translationFailures++;}
+      localCaptionCues.push({start:chunks[index].timestamp[0],end:chunks[index].timestamp[1],korean});
+      status.textContent=`무료 한국어 번역 중… ${index+1}/${chunks.length}`;
+    }
+    const srt=localCaptionCues.map((chunk,index)=>`${index+1}\n${srtTime(chunk.start)} --> ${srtTime(chunk.end)}\n${chunk.korean}\n`).join('\n');
+    output.value=srt;
+    if(localCaptionUrl) URL.revokeObjectURL(localCaptionUrl);
+    localCaptionUrl=URL.createObjectURL(new Blob([srt],{type:'text/plain;charset=utf-8'}));
+    const download=document.getElementById('localCaptionDownload'); download.href=localCaptionUrl; download.style.display='block';
+    if(localDisplayUrl) URL.revokeObjectURL(localDisplayUrl);
+    const displayFile=videoFile||audioFile;
+    localDisplayUrl=URL.createObjectURL(displayFile);
+    const audio=document.getElementById('localCaptionAudio'), video=document.getElementById('localCaptionVideo'), videoWrap=document.getElementById('localCaptionVideoWrap');
+    if(videoFile){ video.src=localDisplayUrl; videoWrap.style.display='block'; audio.style.display='none'; }
+    else{ audio.src=localDisplayUrl; audio.style.display='block'; videoWrap.style.display='none'; }
+    document.getElementById('localCaptionNow').style.display='block'; updateLocalCaptionNow();
+    status.textContent=translationFailures ? `⚠️ ${chunks.length}개 중 ${translationFailures}개는 무료 번역 서비스 제한으로 번역하지 못했습니다. 잠시 뒤 다시 시도해 주세요.` : `✅ ${chunks.length}개의 한국어 자막을 만들었습니다. MP3를 재생하면 위에 번역이 표시됩니다.`;
+  }catch(error){ status.textContent=`오류: ${error?.message||'음성 자막을 만들지 못했습니다.'}`; }
+  finally{ button.disabled=false; }
+}
+document.getElementById('localCaptionStart').addEventListener('click',createLocalMp3Caption);
+document.getElementById('localCaptionAudio').addEventListener('timeupdate',updateLocalCaptionNow);
+document.getElementById('localCaptionAudio').addEventListener('seeked',updateLocalCaptionNow);
+document.getElementById('localCaptionVideo').addEventListener('timeupdate',updateLocalCaptionNow);
+document.getElementById('localCaptionVideo').addEventListener('seeked',updateLocalCaptionNow);
 const EXAM_META = {
   test:{label:'테스트', icon:'✏️', description:'상시 응시 가능'},
   midterm:{label:'중간고사', icon:'📘', description:'관리자가 열었을 때 응시 가능'},
